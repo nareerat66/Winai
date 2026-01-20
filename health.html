@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinAI - ผลประเมินสุขภาพ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-section">
+            <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="logo-text">
+                <h3>WinAI International<br>Semi UniverSchool</h3>
+                <span>นักเรียน</span>
+            </div>
+        </div>
+
+        <ul class="menu-list">
+            <li><a href="schedule.html" class="menu-item"><i class="fa-solid fa-table"></i> ตารางเรียน</a></li>
+            <li><a href="grades.html" class="menu-item"><i class="fa-solid fa-user-graduate"></i> ผลการศึกษา</a></li>
+            <li><a href="health.html" class="menu-item active"><i class="fa-solid fa-hand-holding-heart"></i> ผลประเมินสุขภาพ</a></li>
+            <li><a href="evaluation.html" class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> ประเมินการเรียนการสอน</a></li>
+            <li><a href="#" onclick="notReady()" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ปฏิทินกิจกรรม</a></li>
+        </ul>
+
+        <div class="logout-btn" onclick="confirmLogout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ
+        </div>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="page-header">
+            <div class="page-title">สมุดบันทึกสุขภาพประจำปี</div>
+            <button class="btn-action" onclick="alert('กำลังพิมพ์รายงานสุขภาพ...')">
+                <i class="fa-solid fa-print"></i> พิมพ์รายงาน
+            </button>
+        </div>
+
+        <div class="summary-wrapper" style="margin-top: 0;">
+            
+            <div class="stat-card border-blue">
+                <div class="stat-icon icon-bg-blue"><i class="fa-solid fa-weight-scale"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">น้ำหนัก (กก.)</span>
+                    <span class="stat-value" id="weightVal">-</span>
+                </div>
+            </div>
+
+            <div class="stat-card border-green">
+                <div class="stat-icon icon-bg-green"><i class="fa-solid fa-ruler-vertical"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">ส่วนสูง (ซม.)</span>
+                    <span class="stat-value" id="heightVal">-</span>
+                </div>
+            </div>
+
+            <div class="stat-card border-gold gpax-highlight">
+                <div class="stat-icon icon-bg-gold"><i class="fa-solid fa-calculator"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">ดัชนีมวลกาย (BMI)</span>
+                    <span class="stat-value" id="bmiVal">-</span>
+                    <small id="bmiText" style="font-size: 0.8rem; font-weight: 600;">-</small>
+                </div>
+            </div>
+
+            <div class="stat-card border-brown">
+                <div class="stat-icon icon-bg-brown"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div class="stat-info">
+                    <span class="stat-label">ความดันโลหิต</span>
+                    <span class="stat-value" id="bpVal">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="health-grid-container">
+            
+            <div class="health-card">
+                <div class="card-header-text"><i class="fa-solid fa-file-medical"></i> ข้อมูลทางการแพทย์</div>
+                
+                <div class="health-detail-item">
+                    <span>กรุ๊ปเลือด</span>
+                    <strong id="bloodType">-</strong>
+                </div>
+                <div class="health-detail-item">
+                    <span>โรคประจำตัว</span>
+                    <strong id="chronicDisease" class="text-danger">-</strong>
+                </div>
+                <div class="health-detail-item">
+                    <span>ประวัติแพ้ยา/อาหาร</span>
+                    <strong id="allergy" class="text-danger">-</strong>
+                </div>
+                <div class="health-detail-item">
+                    <span>ค่าสายตา (ซ้าย/ขวา)</span>
+                    <strong id="eyeSight">-</strong>
+                </div>
+            </div>
+
+            <div class="health-card">
+                <div class="card-header-text"><i class="fa-solid fa-syringe"></i> ประวัติการได้รับวัคซีน</div>
+                <table class="health-table">
+                    <thead>
+                        <tr>
+                            <th>ชื่อวัคซีน</th>
+                            <th>วันที่ได้รับ</th>
+                            <th>สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vaccineBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="health-card" style="margin-top: 20px;">
+            <div class="card-header-text"><i class="fa-solid fa-person-running"></i> ผลทดสอบสมรรถภาพทางกาย (Physical Fitness)</div>
+            <table class="health-table">
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">รายการทดสอบ</th>
+                    </tr>
+                </thead>
+                <tbody id="fitnessBody">
+                    </tbody>
+            </table>    
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary-brown: #79443b;
+    --header-brown: #8d704f;
+    --active-red: #a92323;
+    --bg-gray: #f5f5f5;
+    --text-dark: #333;
+    --sidebar-width: 240px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Sarabun', sans-serif;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #fcfcfc;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem 1.5rem 1rem;
+    gap: 10px;
+}
+
+.logo-icon {
+    background-color: var(--primary-brown);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.logo-text h3 { font-size: 0.9rem; font-weight: 700; line-height: 1.2; }
+.logo-text span { font-size: 0.75rem; color: #666; }
+
+.menu-list { list-style: none; flex-grow: 1; }
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    color: #666;
+    text-decoration: none;
+    transition: 0.3s;
+    cursor: pointer;
+    font-weight: 500;
+    width: 100%;
+}
+
+.menu-item i { width: 25px; margin-right: 10px; font-size: 1.1rem; }
+.menu-item:hover { background-color: #f0f0f0; }
+
+/* Active State */
+.menu-item.active {
+    background-color: var(--primary-brown);
+    color: white;
+    border-left: 4px solid #5a322c;
+}
+
+.logout-btn {
+    margin-top: auto;
+    border-top: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    color: #dc3545;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+}
+.logout-btn i { margin-right: 10px; transform: rotate(180deg); }
+
+/* --- Main Content --- */
+.main-wrapper {
+    margin-left: var(--sidebar-width);
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    width: calc(100% - var(--sidebar-width));
+}
+
+/* --- Styles สำหรับหน้าตารางเรียน --- */
+.filter-section { display: flex; gap: 2rem; margin-bottom: 1.5rem; align-items: center; }
+.filter-group { display: flex; align-items: center; gap: 10px; }
+.filter-label { color: #000080; font-size: 1.1rem; font-weight: 500; }
+.custom-select { padding: 5px 15px; border: 1px solid #ccc; border-radius: 5px; background-color: #ddd; min-width: 100px; text-align: center; }
+
+.schedule-table-container table { width: 100%; border-collapse: collapse; min-width: 800px; }
+.schedule-table-container th { background-color: var(--header-brown); color: white; padding: 15px; }
+.schedule-table-container th:first-child { border-top-left-radius: 10px; }
+.schedule-table-container th:last-child { border-top-right-radius: 10px; }
+.schedule-table-container td { padding: 15px; text-align: center; border: 1px solid #e0e0e0; font-weight: 500; }
+
+.day-col { color: white; font-weight: bold; width: 120px; }
+.day-odd { background-color: #aec6ea; }
+.day-even { background-color: #aec6ea; }
+.row-odd { background-color: #e8eff9; }
+.row-even { background-color: #f4f8fe; }
+
+/* --- Styles สำหรับหน้าผลการศึกษา --- */
+.grades-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+.grades-header h1 { font-size: 2.2rem; font-weight: bold; color: #333; }
+
+.btn-report {
+    background-color: var(--active-red);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.btn-report:hover { background-color: #8a1c1c; }
+
+.info-form { display: flex; flex-wrap: wrap; gap: 20px 40px; margin-bottom: 30px; align-items: center; }
+.info-group { display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600; }
+.info-input { border: none; border-bottom: 1px solid #333; background: transparent; width: 180px; text-align: center; font-size: 1rem; outline: none; color: #555; }
+.info-select { border: 1px solid #aaa; border-radius: 8px; padding: 5px 10px; min-width: 100px; background: white; }
+
+.grade-table-container { border: 2px solid #000; margin-bottom: 30px;}
+.grade-table { width: 100%; border-collapse: collapse; }
+.grade-table th, .grade-table td { border: 1px solid #000; padding: 15px; text-align: center; font-size: 1.1rem; }
+.grade-table th { background-color: #fff; font-weight: bold; }
+.grade-table td { font-weight: 600; }
+
+.grades-footer { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.footer-col { display: flex; flex-direction: column; gap: 20px; }
+.footer-item { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; }
+.footer-input { border: none; border-bottom: 1px solid #333; width: 150px; height: 1.5rem;}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-brown);
+    border-left: 5px solid var(--header-brown);
+    padding-left: 15px;
+}
+
+/* การ์ดแสดงข้อมูลนักเรียน (ให้ดูเหมือน Filter bar หน้าแรก) */
+.student-info-card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* จัดเรียงอัตโนมัติ */
+    gap: 1.5rem;
+    border: 1px solid #e0e0e0;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-brown);
+}
+
+/* ปุ่มดูรายงาน */
+.btn-action {
+    background-color: var(--header-brown); /* ใช้สีน้ำตาลอ่อนของหัวตาราง */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+.btn-action:hover {
+    background-color: var(--primary-brown); /* เปลี่ยนเป็นน้ำตาลเข้มเมื่อเมาส์ชี้ */
+}
+.grade-status {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.status-pass { background-color: #d1e7dd; color: #0f5132; }
+.status-top { background-color: #cfe2ff; color: #084298; }
+.status-fail { background-color: #f8d7da; color: #842029; }
+.btn-action {
+    background-color: var(--header-brown);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/** สรุปผลการเรียน */
+
+.summary-wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+.summary-card {
+    flex: 1;
+    min-width: 140px;
+    padding: 1.5rem 1rem;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.summary-label { font-size: 0.9rem; margin-bottom: 5px; opacity: 0.9; }
+.summary-value { font-size: 2.2rem; font-weight: bold; }
+.card-brown { background-color: #4f538d; }
+.card-blue { background-color: #724f8d; }
+.card-green { background-color: #6c8d4f; }
+.card-purple { background-color: #8d4f55; }
+
+/* --- Health Page Styles --- */
+
+.health-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.health-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.card-header-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-brown);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--header-brown);
+}
+
+.health-detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 1.05rem;
+}
+.health-detail-item:last-child { border-bottom: none; }
+
+.text-danger { color: #dc3545; }
+.text-success { color: #198754; }
+
+/* Table for Health */
+.health-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.health-table th {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 10px;
+    font-size: 0.95rem;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+.health-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.health-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* แบ่งครึ่งอัตโนมัติ */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.health-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 2px solid #e0e0e0; /* กรอบเหมือนหน้าเกรด */
+}
+
+.card-header-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-brown);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.health-detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px dashed #eee;
+    font-size: 1rem;
+}
+.health-detail-item:last-child { border-bottom: none; }
+
+.text-danger { color: #dc3545; }
+.text-success { color: #198754; }
+
+/* ตารางแบบหน้าสุขภาพ (Health Table) */
+.health-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.health-table th {
+    background-color: #f8f9fa;
+    color: #555;
+    padding: 12px;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+}
+.health-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    color: #444;
+}
+
+/* ป้ายสถานะ (Badge) */
+.badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.bg-success { background-color: #d1e7dd; color: #0f5132; } /* สีเขียว */
+.bg-warning { background-color: #fff3cd; color: #664d03; } /* สีเหลือง */
+.eval-pass { color: #198754; font-weight: bold; } /* ตัวหนังสือเขียว */
+.eval-good { color: #0d6efd; font-weight: bold; } /* ตัวหนังสือฟ้า */
+
+/* --- ตารางประเมินฉบับเต็ม --- */
+
+.table-group-header td {
+    background-color: #e9ecef;
+    color: var(--primary-brown);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 15px 12px;
+    border-top: 2px solid #ccc;
+    text-align: left;
+}
+
+/* ปรับระยะห่างของแถวปกติให้อ่านง่ายขึ้น */
+.eval-table td {
+    padding: 14px 10px; 
+}
+
+/* ไฮไลท์แถวเวลาเอาเมาส์ชี้ เพื่อให้ไล่สายตาง่าย */
+.eval-table tbody tr:not(.table-group-header):hover {
+    background-color: #fafafa;
+}
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinAI - ตารางเรียน</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-section">
+            <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="logo-text">
+                <h3>WinAI International<br>Semi UniverSchool</h3>
+                <span>นักเรียน</span>
+            </div>
+        </div>
+
+        <ul class="menu-list">
+            <li><a href="schedule.html" class="menu-item active"><i class="fa-solid fa-table"></i> ตารางเรียน</a></li>
+            <li><a href="grades.html" class="menu-item"><i class="fa-solid fa-user-graduate"></i> ผลการศึกษา</a></li>
+            <li><a href="health.html"  class="menu-item"><i class="fa-solid fa-hand-holding-heart"></i> ผลประเมินสุขภาพ</a></li>
+            <li><a href="evaluation.html"  class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> ประเมินการเรียนการสอน</a></li>
+            <li><a href="#" onclick="notReady()" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ปฏิทินกิจกรรม</a></li>
+        </ul>
+
+        <div class="logout-btn" onclick="confirmLogout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ
+        </div>
+    </aside>
+
+    <main class="main-wrapper">
+    <div class="filter-section">
+
+        <div class="filter-group">
+            <span class="filter-label">ปีการศึกษา:</span>
+            <select class="custom-select" id="yearSelect" onchange="loadSchedule()">
+                <option value="2568">2568</option>
+                <option value="2567">2567</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <span class="filter-label">ภาคเรียน:</span>
+            <select class="custom-select" id="termSelect" onchange="loadSchedule()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+    </div>
+        <div class="schedule-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>วัน / เวลา</th><th>8:30-9:30</th><th>9:30-10:30</th><th>10:30-11:30</th><th>12:30-13:30</th><th>13:30-14:30</th><th>14:30-15:30</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinAI - ประเมินการสอน</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo-section">
+            <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+            <div class="logo-text">
+                <h3>WinAI International<br>Semi UniverSchool</h3>
+                <span>นักเรียน</span>
+            </div>
+        </div>
+
+        <ul class="menu-list">
+            <li><a href="schedule.html" class="menu-item"><i class="fa-solid fa-table"></i> ตารางเรียน</a></li>
+            <li><a href="grades.html" class="menu-item"><i class="fa-solid fa-user-graduate"></i> ผลการศึกษา</a></li>
+            <li><a href="health.html" class="menu-item"><i class="fa-solid fa-hand-holding-heart"></i> ผลประเมินสุขภาพ</a></li>
+            <li><a href="evaluation.html" class="menu-item active"><i class="fa-solid fa-chalkboard-user"></i> ประเมินการเรียนการสอน</a></li>
+            <li><a href="#" onclick="notReady()" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ปฏิทินกิจกรรม</a></li>
+        </ul>
+
+        <div class="logout-btn" onclick="confirmLogout()">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ
+        </div>
+    </aside>
+
+    <main class="main-wrapper">
+        <div class="page-header">
+            <div class="page-title">แบบประเมินประสิทธิภาพการสอน</div>
+        </div>
+
+        <div class="filter-section" style="margin-bottom: 20px; flex-wrap: wrap;">
+            <div class="filter-group">
+                <span class="filter-label">ปีการศึกษา:</span>
+                <select class="custom-select" id="evalYearSelect" onchange="loadEvaluationSubjects()">
+                    <option value="2568">2568</option>
+                    <option value="2567">2567</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">ภาคเรียน:</span>
+                <select class="custom-select" id="evalTermSelect" onchange="loadEvaluationSubjects()">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+            
+            <div class="filter-group" style="flex-grow: 1; min-width: 300px;">
+                <span class="filter-label">วิชาที่ลงทะเบียนเรียน:</span>
+                <select class="custom-select" id="subjectSelect" onchange="loadTeacherInfo()" style="width: 100%;">
+                    <option value="" disabled selected>-- กรุณาเลือกวิชา --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="eval-card teacher-profile-card">
+            <div class="teacher-img-box">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="teacher-info">
+                <h3 id="teacherName">กรุณาเลือกวิชา</h3>
+                <p id="subjectName" style="color: #666;">-</p>
+                <div class="status-badge" id="evalStatus">รอการประเมิน</div>
+            </div>
+        </div>
+
+        <div class="eval-card" id="evaluationFormSection">
+            <div class="card-header-text"><i class="fa-solid fa-list-check"></i> รายการประเมิน</div>
+            
+            <form id="evalForm" onsubmit="submitEvaluation(event)">
+                <table class="eval-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width: 60%;">ประเด็นพิจารณา</th>
+                            <th colspan="5" style="text-align: center;">ระดับความพึงพอใจ</th>
+                        </tr>
+                        <tr>
+                            <th>5</th> <th>4</th> <th>3</th> <th>2</th> <th>1</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="table-group-header"><td colspan="6">1. ด้านกระบวนการจัดการเรียนรู้</td></tr>
+                        <tr><td>1.1 ครูมีการเตรียมการสอน และเข้าสอนตรงเวลา</td>
+                            <td><input type="radio" name="q1" value="5" required></td><td><input type="radio" name="q1" value="4"></td><td><input type="radio" name="q1" value="3"></td><td><input type="radio" name="q1" value="2"></td><td><input type="radio" name="q1" value="1"></td></tr>
+                        <tr><td>1.2 อธิบายเนื้อหาได้ชัดเจน ยกตัวอย่างประกอบให้เข้าใจง่าย</td>
+                            <td><input type="radio" name="q2" value="5" required></td><td><input type="radio" name="q2" value="4"></td><td><input type="radio" name="q2" value="3"></td><td><input type="radio" name="q2" value="2"></td><td><input type="radio" name="q2" value="1"></td></tr>
+                        
+                        <tr class="table-group-header"><td colspan="6">2. ด้านสื่อและเทคโนโลยี</td></tr>
+                        <tr><td>2.1 สื่อการสอนทันสมัย อ่านง่าย ชัดเจน</td>
+                            <td><input type="radio" name="q3" value="5" required></td><td><input type="radio" name="q3" value="4"></td><td><input type="radio" name="q3" value="3"></td><td><input type="radio" name="q3" value="2"></td><td><input type="radio" name="q3" value="1"></td></tr>
+                        
+                        <tr class="table-group-header"><td colspan="6">3. ด้านบรรยากาศในชั้นเรียน</td></tr>
+                        <tr><td>3.1 เปิดโอกาสให้ซักถามและแสดงความคิดเห็น</td>
+                            <td><input type="radio" name="q4" value="5" required></td><td><input type="radio" name="q4" value="4"></td><td><input type="radio" name="q4" value="3"></td><td><input type="radio" name="q4" value="2"></td><td><input type="radio" name="q4" value="1"></td></tr>
+                        
+                        <tr class="table-group-header"><td colspan="6">4. ด้านการวัดและประเมินผล</td></tr>
+                        <tr><td>4.1 แจ้งเกณฑ์การให้คะแนนชัดเจน</td>
+                            <td><input type="radio" name="q5" value="5" required></td><td><input type="radio" name="q5" value="4"></td><td><input type="radio" name="q5" value="3"></td><td><input type="radio" name="q5" value="2"></td><td><input type="radio" name="q5" value="1"></td></tr>
+                        
+                        <tr class="table-group-header"><td colspan="6">5. ด้านคุณธรรมและจริยธรรม</td></tr>
+                        <tr><td>5.1 ใช้วาจาสุภาพ เป็นแบบอย่างที่ดี</td>
+                            <td><input type="radio" name="q6" value="5" required></td><td><input type="radio" name="q6" value="4"></td><td><input type="radio" name="q6" value="3"></td><td><input type="radio" name="q6" value="2"></td><td><input type="radio" name="q6" value="1"></td></tr>
+                    </tbody>
+                </table>
+
+                <div style="margin-top: 20px;">
+                    <label style="font-weight: 600; color: var(--primary-brown);">ข้อเสนอแนะเพิ่มเติม:</label>
+                    <textarea class="comment-box" rows="3" placeholder="แสดงความคิดเห็น..."></textarea>
+                </div>
+
+                <div class="action-buttons" style="margin-top: 30px; text-align: center;">
+                    <button type="reset" class="btn-secondary">ล้างค่า</button>
+                    <button type="submit" class="btn-primary" style="padding: 12px 50px;">ยืนยันการประเมิน</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
