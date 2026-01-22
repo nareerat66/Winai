@@ -23,7 +23,9 @@
             <li><a href="grades.html" class="menu-item"><i class="fa-solid fa-user-graduate"></i> ผลการศึกษา</a></li>
             <li><a href="health.html"  class="menu-item"><i class="fa-solid fa-hand-holding-heart"></i> ผลประเมินสุขภาพ</a></li>
             <li><a href="evaluation.html"  class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> ประเมินการเรียนการสอน</a></li>
-            <li><a href="#" onclick="notReady()" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ปฏิทินกิจกรรม</a></li>
+            <li><a href="learning_results.html" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ตรวจสอบผลการประเมินการเรียน</a></li>
+            <li><a href="conduct.html" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ผลคะแนนความประพฤติ</a></li>
+            <li><a href="activities.html" class="menu-item"><i class="fa-regular fa-calendar-check"></i> ปฏิทินกิจกรรม</a></li>
         </ul>
 
         <div class="logout-btn" onclick="confirmLogout()">
@@ -31,37 +33,83 @@
         </div>
     </aside>
 
-    <main class="main-wrapper">
-    <div class="filter-section">
+<main class="main-wrapper">
+    <div class="page-header">
+        <div class="page-title">ตารางเรียน / ตารางสอบ</div>
+    </div>
 
+    <div class="filter-section" style="margin-bottom: 20px;">
         <div class="filter-group">
             <span class="filter-label">ปีการศึกษา:</span>
-            <select class="custom-select" id="yearSelect" onchange="loadSchedule()">
+            <select class="custom-select" id="yearSelect" onchange="loadSchedule(); loadExamSchedule();">
                 <option value="2568">2568</option>
                 <option value="2567">2567</option>
             </select>
         </div>
-
         <div class="filter-group">
             <span class="filter-label">ภาคเรียน:</span>
-            <select class="custom-select" id="termSelect" onchange="loadSchedule()">
+            <select class="custom-select" id="termSelect" onchange="loadSchedule(); loadExamSchedule();">
                 <option value="1">1</option>
                 <option value="2">2</option>
             </select>
         </div>
     </div>
-        <div class="schedule-table-container">
-            <table>
+
+    <div class="tab-container" style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <button id="btn-class" class="tab-btn active" onclick="switchScheduleTab('class')" 
+                style="padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; background-color: var(--primary-brown, #8B4513); color: white; font-family: 'Sarabun';">
+            <i class="fa-solid fa-table"></i> ตารางเรียน
+        </button>
+        <button id="btn-exam" class="tab-btn" onclick="switchScheduleTab('exam')" 
+                style="padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; background-color: #ddd; color: #555; font-family: 'Sarabun';">
+            <i class="fa-solid fa-file-pen"></i> ตารางสอบ
+        </button>
+    </div>
+
+    <div id="classScheduleSection">
+        <div class="schedule-container">
+            <table class="schedule-table" style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr>
-                        <th>วัน / เวลา</th><th>8:30-9:30</th><th>9:30-10:30</th><th>10:30-11:30</th><th>12:30-13:30</th><th>13:30-14:30</th><th>14:30-15:30</th>
+                        <th style="width: 100px;">วัน</th>
+                        <th>08:30-09:30</th>
+                        <th>09:30-10:30</th>
+                        <th>10:30-11:30</th>
+                        <th>11:30-12:30</th>
+                        <th>13:30-14:30</th>
+                        <th>14:30-15:30</th>
                     </tr>
                 </thead>
                 <tbody id="scheduleBody">
                     </tbody>
             </table>
         </div>
-    </main>
+    </div>
+
+    <div id="examScheduleSection" style="display: none;">
+        <div class="filter-group" style="margin-bottom: 15px; justify-content: flex-end;">
+            <span class="filter-label">ประเภทการสอบ:</span>
+            <select class="custom-select" id="examTypeSelect" onchange="loadExamSchedule()">
+                <option value="midterm">สอบกลางภาค (Midterm)</option>
+                <option value="final">สอบปลายภาค (Final)</option>
+            </select>
+        </div>
+
+        <div class="eval-card"> <table class="eval-table"> <thead>
+                    <tr>
+                        <th style="width: 15%;">วันที่สอบ</th>
+                        <th style="width: 15%;">เวลา</th>
+                        <th style="width: 10%;">รหัสวิชา</th>
+                        <th style="width: 40%;">ชื่อวิชา</th>
+                        <th style="width: 20%;">ห้องสอบ</th>
+                    </tr>
+                </thead>
+                <tbody id="examTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</main>
 
     <script src="script.js"></script>
 </body>

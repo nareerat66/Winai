@@ -34,6 +34,24 @@ const schedules = {
         ]
     }
 };
+const examData = {
+    "2568": {
+        "1": {
+            "midterm": [
+                { date: "20 ก.ค. 68", time: "08:30-10:00", code: "ค31101", subject: "คณิตศาสตร์พื้นฐาน", room: "305" },
+                { date: "20 ก.ค. 68", time: "10:30-12:00", code: "ท31101", subject: "ภาษาไทยพื้นฐาน", room: "305" },
+                { date: "22 ก.ค. 68", time: "08:30-10:00", code: "ว31101", subject: "วิทยาศาสตร์กายภาพ", room: "Lab 1" },
+                { date: "22 ก.ค. 68", time: "10:30-11:30", code: "ส31101", subject: "สังคมศึกษา", room: "305" }
+            ],
+            "final": [
+                { date: "25 ต.ค. 68", time: "08:30-10:30", code: "ค31101", subject: "คณิตศาสตร์พื้นฐาน", room: "Auditorium" },
+                { date: "25 ต.ค. 68", time: "13:00-14:30", code: "อ31101", subject: "ภาษาอังกฤษพื้นฐาน", room: "305" },
+                { date: "27 ต.ค. 68", time: "09:00-11:00", code: "ว31101", subject: "วิทยาศาสตร์กายภาพ", room: "Lab 1" }
+            ]
+        }
+        // สามารถเพิ่มข้อมูลเทอม 2 ได้ที่นี่
+    }
+};
 
 const gradesData = {
     "2568": {
@@ -182,6 +200,35 @@ const subjectsData = [
     }
 ];
 
+const competencyData = [
+    { name: "ด้านวิชาการและการเรียนรู้", score: 85 },
+    { name: "ด้านคุณธรรม จริยธรรม", score: 92 },
+    { name: "ด้านความเป็นผู้นำและการทำงานเป็นทีม", score: 78 },
+    { name: "ด้านเทคโนโลยีสารสนเทศ", score: 88 }
+];
+const teacherComment = "นักเรียนมีความตั้งใจเรียนดีมาก มีความรับผิดชอบต่องานที่ได้รับมอบหมาย กล้าแสดงออก แต่ควรเพิ่มความรอบคอบในการทำงานกลุ่มให้มากขึ้น";
+
+const conductData = {
+    score: 95,
+    history: [
+        { date: "15 ม.ค. 68", event: "มาสาย (Late Arrival)", point: -5 },
+        { date: "20 ธ.ค. 67", event: "ช่วยเหลืองานโรงเรียน (Volunteer)", point: +5 },
+        { date: "10 พ.ย. 67", event: "คะแนนตั้งต้น (Initial Score)", point: 95 }
+    ]
+};
+
+const activitiesData = {
+    upcoming: [
+        { name: "งานกีฬาสีสัมพันธ์", date: "14 ก.พ. 68", location: "สนามฟุตบอล" },
+        { name: "ค่ายวิชาการ AI", date: "20-21 ก.พ. 68", location: "หอประชุมใหญ่" }
+    ],
+    past: [
+        { id: "a1", name: "วันไหว้ครู", date: "16 มิ.ย. 67", status: "evaluated" },
+        { id: "a2", name: "ทัศนศึกษาดูงานวิทยาศาสตร์", date: "18 ส.ค. 67", status: "pending" },
+        { id: "a3", name: "กิจกรรมจิตอาสาพัฒนาโรงเรียน", date: "05 ธ.ค. 67", status: "pending" }
+    ]
+};
+
 // ==================== 2. ฟังก์ชัน (Functions) ====================
 
 function loadSchedule() {
@@ -218,6 +265,45 @@ function loadSchedule() {
         });
         tbody.appendChild(tr);
     });
+}
+function loadExamSchedule() {
+    const year = document.getElementById('yearSelect').value;
+    const term = document.getElementById('termSelect').value;
+    const type = document.getElementById('examTypeSelect').value; // เลือก กลางภาค/ปลายภาค
+    
+    const tbody = document.getElementById('examTableBody');
+    tbody.innerHTML = '';
+
+    // ตรวจสอบว่ามีข้อมูลหรือไม่
+    if (examData[year] && examData[year][term] && examData[year][term][type]) {
+        const exams = examData[year][term][type];
+        
+        exams.forEach((exam, index) => {
+            const tr = document.createElement('tr');
+            tr.className = index % 2 === 0 ? 'row-odd' : 'row-even';
+            tr.innerHTML = `
+                <td style="text-align:center;">${exam.date}</td>
+                <td style="text-align:center;">${exam.time}</td>
+                <td style="text-align:center;">${exam.code}</td>
+                <td>${exam.subject}</td>
+                <td style="text-align:center;">${exam.room}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    } else {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">ไม่พบข้อมูลตารางสอบ</td></tr>';
+    }
+}
+
+// ฟังก์ชันสลับแท็บ (Tab Switcher)
+function switchScheduleTab(tabName) {
+    // จัดการปุ่ม
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`btn-${tabName}`).classList.add('active');
+
+    // จัดการเนื้อหา
+    document.getElementById('classScheduleSection').style.display = tabName === 'class' ? 'block' : 'none';
+    document.getElementById('examScheduleSection').style.display = tabName === 'exam' ? 'block' : 'none';
 }
 
 function loadGrades() {
@@ -368,7 +454,7 @@ function loadEvaluationSubjects() {
     let availableSubjects = [];
     scheduleSubjects.forEach(shortName => {
         // หาว่าชื่อสั้นนี้ ตรงกับ keyword ของวิชาไหนใน subjectsData
-        const match = subjectsData.find(s => s.keywords.includes(shortName));
+        const match = subjectsData.find(s => s.matchName.includes(shortName));
         if (match) {
             // เช็คว่าวิชานี้ถูกใส่ไปหรือยัง (กันซ้ำ)
             if (!availableSubjects.find(s => s.id === match.id)) {
@@ -438,6 +524,114 @@ function submitEvaluation(event) {
     }
 }
 
+// --- ฟังก์ชันสำหรับหน้าใหม่ ---
+
+// โหลดข้อมูลผลประเมินสมรรถนะ
+function loadCompetency() {
+    const container = document.getElementById('competencyResults');
+    if (!container) return;
+
+    let html = '';
+    competencyData.forEach(item => {
+        html += `
+        <div class="competency-item">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <strong>${item.name}</strong>
+                <span>${item.score}%</span>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: ${item.score}%"></div>
+            </div>
+        </div>`;
+    });
+    container.innerHTML = html;
+    document.getElementById('teacherComments').innerText = teacherComment;
+}
+
+// โหลดข้อมูลความประพฤติ
+function loadConduct() {
+    const scoreEl = document.getElementById('conductScoreValue');
+    const tbody = document.getElementById('conductHistoryBody');
+    if (!scoreEl) return;
+
+    // Set score color
+    let score = conductData.score;
+    scoreEl.innerText = score;
+    const circle = document.getElementById('conductScoreCircle');
+    if(score >= 80) circle.style.borderColor = "#198754"; // Green
+    else if(score >= 50) circle.style.borderColor = "#ffc107"; // Yellow
+    else circle.style.borderColor = "#dc3545"; // Red
+
+    // Load History
+    let html = '';
+    conductData.history.forEach(h => {
+        const colorClass = h.point > 0 ? "text-success" : (h.point < 0 ? "text-danger" : "");
+        const sign = h.point > 0 ? "+" : "";
+        html += `
+        <tr>
+            <td>${h.date}</td>
+            <td>${h.event}</td>
+            <td class="${colorClass}" style="font-weight:bold;">${sign}${h.point}</td>
+        </tr>`;
+    });
+    tbody.innerHTML = html;
+}
+
+// โหลดข้อมูลกิจกรรม
+function loadActivities() {
+    const upcomingContainer = document.getElementById('upcomingActivities');
+    const pastBody = document.getElementById('pastActivitiesBody');
+    if (!upcomingContainer) return;
+
+    // Upcoming
+    let upHtml = '';
+    activitiesData.upcoming.forEach(a => {
+        upHtml += `
+        <div class="activity-card">
+            <div class="activity-date"><i class="fa-regular fa-calendar"></i> ${a.date}</div>
+            <div class="activity-title">${a.name}</div>
+            <div><i class="fa-solid fa-location-dot"></i> ${a.location}</div>
+        </div>`;
+    });
+    upcomingContainer.innerHTML = upHtml || '<p>ไม่มีกิจกรรมเร็วๆ นี้</p>';
+
+    // Past
+    let pastHtml = '';
+    activitiesData.past.forEach(a => {
+        let actionBtn = '';
+        let statusBadge = '';
+        if(a.status === 'evaluated') {
+            statusBadge = '<span class="badge bg-success">ประเมินแล้ว</span>';
+            actionBtn = '<button class="btn-secondary" disabled style="padding:5px 10px; font-size:0.8rem;">เรียบร้อย</button>';
+        } else {
+            statusBadge = '<span class="badge bg-warning">รอประเมิน</span>';
+            actionBtn = `<button class="btn-primary" onclick="evaluateActivity('${a.id}')" style="padding:5px 10px; font-size:0.8rem;">ประเมิน</button>`;
+        }
+
+        pastHtml += `
+        <tr>
+            <td>${a.name}</td>
+            <td>${a.date}</td>
+            <td>${statusBadge}</td>
+            <td>${actionBtn}</td>
+        </tr>`;
+    });
+    pastBody.innerHTML = pastHtml;
+}
+
+function evaluateActivity(id) {
+    if(confirm("ต้องการเริ่มทำแบบประเมินกิจกรรมนี้ใช่หรือไม่?")) {
+        // ในสถานการณ์จริงอาจจะ Link ไปหน้า Form หรือเปิด Modal
+        const act = activitiesData.past.find(a => a.id === id);
+        if(act) {
+            act.status = "evaluated";
+            alert("บันทึกผลการประเมินเรียบร้อย!");
+            loadActivities(); // Reload table
+        }
+    }
+}
+
+// ==================== 3. ฟังก์ชันทั่วไป (General Functions) ====================
 function confirmLogout() {
     if(confirm('คุณต้องการออกจากระบบใช่หรือไม่?')) { alert('ออกจากระบบเรียบร้อย'); }
 }
@@ -447,6 +641,11 @@ function notReady() { alert('หน้านี้ยังไม่พร้อ
 document.addEventListener("DOMContentLoaded", function() {
     // เช็คว่าอยู่หน้าไหน ก็ให้โหลดข้อมูลหน้านั้น
     if(document.getElementById('scheduleBody')) { loadSchedule(); }
+    if(document.getElementById('examTableBody')) { loadExamSchedule(); }
     if(document.getElementById('gradeTableBody')) { loadGrades(); }
     if(document.getElementById('weightVal')) { loadHealth(); }
+    if(document.getElementById('subjectSelect')) { loadEvaluationSubjects(); } 
+    if(document.getElementById('competencyResults')) { loadCompetency(); }
+    if(document.getElementById('conductScoreValue')) { loadConduct(); }
+    if(document.getElementById('upcomingActivities')) { loadActivities(); }
 });
