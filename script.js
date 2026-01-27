@@ -229,7 +229,103 @@ const activitiesData = {
     ]
 };
 
+const subjectDatabase = [
+    { id: 'TH101', name: 'ภาษาไทยเพื่อการสื่อสาร', credit: 3, time: 'จันทร์ 08:30-10:30' },
+    { id: 'EN102', name: 'ภาษาอังกฤษพื้นฐาน', credit: 3, time: 'อังคาร 13:30-15:30' },
+    { id: 'MA201', name: 'แคลคูลัส 1', credit: 3, time: 'พุธ 09:30-12:30' }
+];
+
 // ==================== 2. ฟังก์ชัน (Functions) ====================
+
+let selectedSubjects = [];
+
+function searchSubject() {
+    const keyword = document.getElementById('subjectSearch').value;
+    const resultDiv = document.getElementById('searchResult');
+    
+    if(!keyword) {
+        alert("กรุณาระบุรหัสวิชาหรือชื่อวิชา");
+        return;
+    }
+
+    const found = subjectDatabase.find(s => s.id.includes(keyword) || s.name.includes(keyword));
+
+    if(found) {
+        resultDiv.innerHTML = `
+            <div class="activity-card" style="display: flex; justify-content: space-between; align-items: center; border-left: 8px solid #28a745; animation: fadeIn 0.5s;">
+                <div>
+                    <span style="background: var(--primary-brown); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.8rem;">พบข้อมูลรายวิชา</span>
+                    <h4 style="margin: 10px 0 5px 0; color: var(--text-dark); font-size: 1.2rem;">${found.id} - ${found.name}</h4>
+                    <p style="margin: 0; color: #666; font-size: 0.9rem;">
+                        <i class="far fa-clock"></i> <strong>เวลาเรียน:</strong> ${found.time} | 
+                        <i class="far fa-star"></i> <strong>หน่วยกิต:</strong> ${found.credit}
+                    </p>
+                </div>
+                <button onclick="addToCart('${found.id}', '${found.name}', ${found.credit}, '${found.time}')" class="btn-primary" style="background-color: #28a745; border: none; white-space: nowrap;">
+                    <i class="fas fa-plus-circle"></i> เลือกวิชานี้
+                </button>
+            </div>
+        `;
+    } else {
+        resultDiv.innerHTML = `
+            <div style="text-align: center; padding: 20px; background: #fff5f5; border-radius: 8px; border: 1px dashed var(--active-red);">
+                <p style="color: var(--active-red); margin: 0;"><i class="fas fa-exclamation-triangle"></i> ไม่พบวิชาที่คุณค้นหา กรุณาลองใหม่อีกครั้ง</p>
+            </div>
+        `;
+    }
+}
+
+function addToCart(id, name, credit, time) {
+    if(selectedSubjects.find(s => s.id === id)) {
+        alert("วิชานี้อยู่ในตะกร้าแล้ว");
+        return;
+    }
+    
+    selectedSubjects.push({id, name, credit, time});
+    updateCart();
+    document.getElementById('searchResult').innerHTML = "";// ล้างผลการค้นหา
+    document.getElementById('subjectSearch').value = ""; // ล้างช่องค้นหา
+}
+
+function updateCart() {
+    const cartBody = document.getElementById('cartItems');
+    const confirmBtn = document.getElementById('btnConfirmReg');
+    
+    if (!cartBody) return;
+
+    if (selectedSubjects.length === 0) {
+        cartBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">ยังไม่ได้เลือกรายวิชา</td></tr>';
+        if(confirmBtn) confirmBtn.style.display = "none";
+        return;
+    }
+
+    cartBody.innerHTML = selectedSubjects.map(s => `
+        <tr>
+            <td>${s.id}</td>
+            <td>${s.name}</td>
+            <td>${s.credit}</td>
+            <td>${s.time}</td>
+            <td><button onclick="removeFromCart('${s.id}')" style="color: red; border: none; background: none; cursor: pointer;"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    `).join('');
+
+    confirmBtn.style.display = selectedSubjects.length > 0 ? "inline-block" : "none";
+}
+
+function removeFromCart(id) {
+    selectedSubjects = selectedSubjects.filter(s => s.id !== id);
+    updateCart();
+}
+
+function confirmRegistration() {
+    if (confirm('ยืนยันการลงทะเบียนวิชาทั้งหมดในตะกร้า?')) {
+        // บันทึกลง LocalStorage เพื่อให้หน้า Schedule.html ดึงไปใช้
+        localStorage.setItem('registeredSubjects', JSON.stringify(cart));
+        
+        alert('ลงทะเบียนสำเร็จ!');
+        window.location.href = 'schedule.html'; // ส่งไปหน้าตารางเรียนทันที
+    }
+}
 
 function loadSchedule() {
     const yearSelect = document.getElementById('yearSelect');
@@ -246,7 +342,17 @@ function loadSchedule() {
         tbody.innerHTML = '<tr><td colspan="7">ไม่พบข้อมูลตารางเรียน</td></tr>';
         return;
     }
+    const extraReg = localStorage.getItem('registeredSubjects');
+    if (extraReg) {
+        const extraData = JSON.parse(extraReg);
+        // นำวิชาที่ลงทะเบียนไว้ มาแทรกในตาราง (ตัวอย่าง logic ง่ายๆ)
+        console.log("พบวิชาลงทะเบียนเพิ่ม:", extraData);
+    }
 
+    if (data.length === 0) {
+        scheduleBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">ไม่พบข้อมูลตารางเรียน</td></tr>';
+        return;
+    }
     tbody.innerHTML = '';
     data.forEach((row, index) => {
         const tr = document.createElement('tr');
@@ -630,6 +736,7 @@ function evaluateActivity(id) {
         }
     }
 }
+
 
 // ==================== 3. ฟังก์ชันทั่วไป (General Functions) ====================
 function confirmLogout() {

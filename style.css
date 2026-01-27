@@ -130,6 +130,19 @@ body {
 .tab-btn:hover {
     opacity: 0.9;
 }
+#scheduleBody td {
+    text-align: center; /* จัดตัวหนังสือในช่องเรียนให้อยู่กึ่งกลาง */
+    border: 1px solid #ddd; /* เพิ่มเส้นคั่นระหว่างช่อง */
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+
+#scheduleBody .day-col {
+    font-weight: bold;
+    background-color: #f8f9fa; /* เปลี่ยนสีพื้นหลังคอลัมน์ "วัน" ให้ดูซอฟต์ลง */
+    color: var(--primary-brown);
+    border-right: 2px solid #ccc;
+}
 
 /* --- Styles สำหรับหน้าผลการศึกษา --- */
 .grades-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
@@ -477,4 +490,73 @@ body {
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px dashed #eee;
+}
+
+/* --- ลงทะเบียนเรียน --- */
+.reg-selection {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.btn-add-cart {
+    background-color: #adefbd;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: px;
+    cursor: pointer;
+}
+
+.btn-remove {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#searchResult, #cartItems tr {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.eval-table th {
+    text-align: center;
+    font-weight: 500;
+}
+
+.eval-table td {
+    vertical-align: middle;
+}
+
+/* ตกแต่งปุ่มลบในตะกร้า */
+.btn-delete {
+    color: var(--active-red);
+    background: #fff0f0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-delete:hover {
+    background: var(--active-red);
+    color: white;
 }
