@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <aside class="sidebar">
         <div class="logo-section">
@@ -17,12 +19,16 @@
             </div>
         </div>
         <ul class="menu-list">
-            <li><a href="registration.html" class="menu-item active"><i class="fa-solid fa-file-signature"></i> ลงทะเบียนเรียน</a></li>
+            <li><a href="registration.html" class="menu-item active"><i class="fa-solid fa-file-signature"></i>
+                    ลงทะเบียนเรียน</a></li>
             <li><a href="schedule.html" class="menu-item"><i class="fa-solid fa-table"></i> ตารางเรียน</a></li>
             <li><a href="grades.html" class="menu-item"><i class="fa-solid fa-user-graduate"></i> ผลการศึกษา</a></li>
-            <li><a href="health.html"  class="menu-item"><i class="fa-solid fa-hand-holding-heart"></i> ผลประเมินสุขภาพ</a></li>
-            <li><a href="evaluation.html"  class="menu-item"><i class="fa-solid fa-chalkboard-user"></i> ประเมินการเรียนการสอน</a></li>
-            <li><a href="learning_results.html" class="menu-item"><i class="fa-solid fa-chart-bar"></i> ผลประเมินการเรียน</a></li>
+            <li><a href="health.html" class="menu-item"><i class="fa-solid fa-hand-holding-heart"></i>
+                    ผลประเมินสุขภาพ</a></li>
+            <li><a href="evaluation.html" class="menu-item"><i class="fa-solid fa-chalkboard-user"></i>
+                    ประเมินการเรียนการสอน</a></li>
+            <li><a href="learning_results.html" class="menu-item"><i class="fa-solid fa-chart-bar"></i>
+                    ผลประเมินการเรียน</a></li>
             <li><a href="conduct.html" class="menu-item"><i class="fa-solid fa-star"></i> ผลคะแนนความประพฤติ</a></li>
             <li><a href="activities.html" class="menu-item"><i class="fa-solid fa-bullhorn"></i> ปฏิทินกิจกรรม</a></li>
         </ul>
@@ -30,8 +36,10 @@
             <i class="fa-solid fa-arrow-right-from-bracket"></i> ออกจากระบบ
         </div>
     </aside>
-<main class="main-wrapper">
-        <div class="page-header"><div class="page-title">ลงทะเบียนรายวิชา</div></div>
+    <main class="main-wrapper">
+        <div class="page-header">
+            <div class="page-title">ลงทะเบียนรายวิชา</div>
+        </div>
 
         <div class="eval-card">
             <div class="reg-selection" style="display: flex; gap: 15px; margin-bottom: 20px;">
@@ -40,6 +48,7 @@
                     <select id="regYear" class="custom-select">
                         <option value="2568">2568</option>
                         <option value="2567">2567</option>
+                        <option value="2566">2566</option>
                     </select>
                 </div>
                 <div>
@@ -51,50 +60,69 @@
                 </div>
             </div>
 
-            <h3 style="color: var(--primary-brown); border-bottom: 2px solid var(--bg-gray); padding-bottom: 10px; margin-bottom: 20px;">
-        <i class="fas fa-search"></i> ค้นหารายวิชาที่เปิดรับลงทะเบียน
-    </h3>
-    <div class="search-box" style="display: flex; gap: 10px; margin-top: 10px;">
-        <input type="text" id="subjectSearch" class="custom-select" style="flex: 1; height: 45px; border: 2px solid #eee;" placeholder="ระบุรหัสวิชา หรือ ชื่อวิชา (เช่น TH101, แคลคูลัส)...">
-        <button onclick="searchSubject()" class="btn-primary" style="padding: 0 25px; height: 45px; background-color: var(--primary-brown);">
-            <i class="fas fa-search"></i> ค้นหา
-        </button>
-    </div>
-    
-    <div id="searchResult" style="margin-top: 20px;"></div>
-</div>
+            <h3
+                style="color: var(--primary-brown); border-bottom: 2px solid var(--bg-gray); padding-bottom: 10px; margin-bottom: 20px;">
+                <i class="fas fa-search"></i> ค้นหารายวิชาที่เปิดรับลงทะเบียน
+            </h3>
+            <div class="search-box" style="display: flex; gap: 10px; margin-top: 10px;">
+                <input type="text" id="subjectSearch" class="custom-select"
+                    style="flex: 1; height: 45px; border: 2px solid #eee;"
+                    placeholder="ระบุรหัสวิชา หรือ ชื่อวิชา (เช่น TH101, แคลคูลัส)...">
+                <button onclick="searchSubject()" class="btn-primary"
+                    style="padding: 0 25px; height: 45px; background-color: var(--primary-brown);">
+                    <i class="fas fa-search"></i> ค้นหา
+                </button>
+            </div>
 
-<div class="eval-card" style="margin-top: 30px;">
-    <h3 style="color: var(--primary-brown); margin-bottom: 20px;">
-        <i class="fas fa-shopping-basket"></i> รายวิชาที่เลือกไว้ในตะกร้า
-    </h3>
-    <div class="table-container" style="overflow-x: auto;">
-        <table class="eval-table">
-            <thead>
-                <tr style="background-color: var(--header-brown); color: white;">
-                    <th style="border-radius: 8px 0 0 0;">รหัสวิชา</th>
-                    <th>ชื่อวิชา</th>
-                    <th>หน่วยกิต</th>
-                    <th>วัน/เวลาเรียน</th>
-                    <th style="border-radius: 0 8px 0 0;">จัดการ</th>
-                </tr>
-            </thead>
-            <tbody id="cartItems">
-                <tr>
-                    <td colspan="5" style="text-align:center; padding: 40px; color: #999;">
-                        <i class="fas fa-info-circle" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
-                        ยังไม่มีรายวิชาในตะกร้า กรุณาค้นหาและเลือกวิชาด้านบน
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="confirm-zone" style="text-align: right; margin-top: 25px;">
-        <button id="btnConfirmReg" class="btn-primary" style="display: none; background-color: #28a745; padding: 12px 30px; font-size: 1.1rem; border-radius: 50px; box-shadow: 0 4px 15px rgba(40,167,69,0.3);" onclick="confirmRegistration()">
-            <i class="fas fa-check-circle"></i> ยืนยันการลงทะเบียนเรียน
-        </button>
-    </div>
-</div>
-    <script src="script.js"></script>
+            <div id="searchResult" style="margin-top: 20px;"></div>
+        </div>
+
+        <div class="eval-card" style="margin-top: 30px;">
+            <h3 style="color: var(--primary-brown); margin-bottom: 20px;">
+                <i class="fas fa-shopping-basket"></i> รายวิชาที่เลือกไว้ในตะกร้า
+            </h3>
+            <div class="table-container" style="overflow-x: auto;">
+                <table class="eval-table">
+                    <thead>
+                        <tr style="background-color: var(--header-brown); color: white;">
+                            <th style="border-radius: 8px 0 0 0;">รหัสวิชา</th>
+                            <th>ชื่อวิชา</th>
+                            <th>หน่วยกิต</th>
+                            <th>วัน/เวลาเรียน</th>
+                            <th style="border-radius: 0 8px 0 0;">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding: 40px; color: #999;">
+                                <i class="fas fa-info-circle"
+                                    style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+                                ยังไม่มีรายวิชาในตะกร้า กรุณาค้นหาและเลือกวิชาด้านบน
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="confirm-zone" style="text-align: right; margin-top: 25px;">
+                <button id="btnConfirmReg" class="btn-primary"
+                    style="display: none; background-color: #28a745; padding: 12px 30px; font-size: 1.1rem; border-radius: 50px; box-shadow: 0 4px 15px rgba(40,167,69,0.3);"
+                    onclick="confirmRegistration()">
+                    <i class="fas fa-check-circle"></i> ยืนยันการลงทะเบียนเรียน
+                </button>
+            </div>
+        </div>
+        <div id="successModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="success-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h2 style="color: #333; margin-bottom: 10px;">ลงทะเบียนสำเร็จ!</h2>
+                <p style="color: #666;">ระบบได้บันทึกรายวิชาของคุณเรียบร้อยแล้ว</p>
+                <button class="modal-btn" onclick="closeModal()">ตกลง</button>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
 </body>
+
 </html>

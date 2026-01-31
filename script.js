@@ -92,7 +92,6 @@ const healthData = { weight: 65.5,
                     bloodType: "AB", 
                     allergies: "ยาพาราเซตามอล", 
                     chronic: "ไม่มี", 
-                    eyeSight: "สั้น 150 / ปกติ", 
                     vaccines: [ { name: "บาดทะยัก (Tetanus)", date: "10 ม.ค. 2567", status: "complete" }, 
                                 { name: "ไข้หวัดใหญ่ (Flu)", date: "15 มิ.ย. 2567", status: "complete" }, 
                                 { name: "HPV (เข็ม 1)", date: "-", status: "pending" } ], 
@@ -230,14 +229,18 @@ const activitiesData = {
 };
 
 const subjectDatabase = [
-    { id: 'TH101', name: 'ภาษาไทยเพื่อการสื่อสาร', credit: 3, time: 'จันทร์ 08:30-10:30' },
-    { id: 'EN102', name: 'ภาษาอังกฤษพื้นฐาน', credit: 3, time: 'อังคาร 13:30-15:30' },
-    { id: 'MA201', name: 'แคลคูลัส 1', credit: 3, time: 'พุธ 09:30-12:30' }
+    { id: "001101", name: "ภาษาอังกฤษพื้นฐาน", credit: 3, time: "จันทร์ 09:00-12:00" },
+    { id: "001102", name: "คณิตศาสตร์ทั่วไป", credit: 3, time: "อังคาร 13:00-16:00" },
+    { id: "001201", name: "การเขียนโปรแกรมเบื้องต้น", credit: 4, time: "พุธ 09:00-12:00" },
+    { id: "001202", name: "วิทยาการข้อมูล", credit: 3, time: "พฤหัส 13:00-16:00" },
+    // เพิ่มวิชาอื่นๆ ตามต้องการ
 ];
+
+const gradePoints = { "A": 4, "B+": 3.5, "B": 3, "C+": 2.5, "C": 2, "D+": 1.5, "D": 1, "F": 0 };
+let selectedSubjects = [];
 
 // ==================== 2. ฟังก์ชัน (Functions) ====================
 
-let selectedSubjects = [];
 
 function searchSubject() {
     const keyword = document.getElementById('subjectSearch').value;
@@ -254,79 +257,120 @@ function searchSubject() {
         resultDiv.innerHTML = `
             <div class="activity-card" style="display: flex; justify-content: space-between; align-items: center; border-left: 8px solid #28a745; animation: fadeIn 0.5s;">
                 <div>
-                    <span style="background: var(--primary-brown); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.8rem;">พบข้อมูลรายวิชา</span>
-                    <h4 style="margin: 10px 0 5px 0; color: var(--text-dark); font-size: 1.2rem;">${found.id} - ${found.name}</h4>
+                    <span style="background: var(--header-brown); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.8rem;">พบข้อมูลรายวิชา</span>
+                    <h4 style="margin: 10px 0 5px 0; color: #333; font-size: 1.2rem;">${found.id} - ${found.name}</h4>
                     <p style="margin: 0; color: #666; font-size: 0.9rem;">
                         <i class="far fa-clock"></i> <strong>เวลาเรียน:</strong> ${found.time} | 
                         <i class="far fa-star"></i> <strong>หน่วยกิต:</strong> ${found.credit}
                     </p>
                 </div>
-                <button onclick="addToCart('${found.id}', '${found.name}', ${found.credit}, '${found.time}')" class="btn-primary" style="background-color: #28a745; border: none; white-space: nowrap;">
-                    <i class="fas fa-plus-circle"></i> เลือกวิชานี้
+                <button onclick="addToCart('${found.id}', '${found.name}', ${found.credit}, '${found.time}')" class="btn-icon add-cart" title="เพิ่มลงตะกร้า">
+                    <i class="fa-solid fa-cart-plus"></i>
                 </button>
             </div>
         `;
     } else {
         resultDiv.innerHTML = `
-            <div style="text-align: center; padding: 20px; background: #fff5f5; border-radius: 8px; border: 1px dashed var(--active-red);">
-                <p style="color: var(--active-red); margin: 0;"><i class="fas fa-exclamation-triangle"></i> ไม่พบวิชาที่คุณค้นหา กรุณาลองใหม่อีกครั้ง</p>
+            <div style="text-align: center; padding: 20px; background: #fff5f5; border-radius: 8px; border: 1px dashed #dc3545;">
+                <p style="color: #dc3545; margin: 0;"><i class="fas fa-exclamation-triangle"></i> ไม่พบวิชาที่คุณค้นหา กรุณาลองใหม่อีกครั้ง</p>
             </div>
         `;
     }
 }
 
 function addToCart(id, name, credit, time) {
+    // เช็คว่าวิชานี้มีในตะกร้าหรือยัง
     if(selectedSubjects.find(s => s.id === id)) {
         alert("วิชานี้อยู่ในตะกร้าแล้ว");
         return;
     }
     
+    // เพิ่มข้อมูลลง Array
     selectedSubjects.push({id, name, credit, time});
-    updateCart();
-    document.getElementById('searchResult').innerHTML = "";// ล้างผลการค้นหา
-    document.getElementById('subjectSearch').value = ""; // ล้างช่องค้นหา
+    
+    // อัปเดตหน้าจอ
+    updateCartTable();
+    
+    // ล้างผลการค้นหาและช่องค้นหา
+    document.getElementById('searchResult').innerHTML = "";
+    document.getElementById('subjectSearch').value = ""; 
 }
 
-function updateCart() {
-    const cartBody = document.getElementById('cartItems');
-    const confirmBtn = document.getElementById('btnConfirmReg');
+function removeFromCart(index) {
+    // ลบข้อมูลออกจาก Array ตาม Index
+    selectedSubjects.splice(index, 1);
+    // อัปเดตหน้าจอใหม่
+    updateCartTable();
+}
+
+// ฟังก์ชัน Render ตาราง (ใช้ชื่อเดียวเพื่อไม่ให้สับสน)
+function updateCartTable() {
+    const tbody = document.getElementById('cartItems');
+    const btnConfirm = document.getElementById('btnConfirmReg');
     
-    if (!cartBody) return;
+    if (!tbody) return; // ป้องกัน error ถ้าไม่มี element นี้ในหน้า
+
+    tbody.innerHTML = '';
 
     if (selectedSubjects.length === 0) {
-        cartBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#888;">ยังไม่ได้เลือกรายวิชา</td></tr>';
-        if(confirmBtn) confirmBtn.style.display = "none";
-        return;
-    }
-
-    cartBody.innerHTML = selectedSubjects.map(s => `
-        <tr>
-            <td>${s.id}</td>
-            <td>${s.name}</td>
-            <td>${s.credit}</td>
-            <td>${s.time}</td>
-            <td><button onclick="removeFromCart('${s.id}')" style="color: red; border: none; background: none; cursor: pointer;"><i class="fas fa-trash"></i></button></td>
-        </tr>
-    `).join('');
-
-    confirmBtn.style.display = selectedSubjects.length > 0 ? "inline-block" : "none";
-}
-
-function removeFromCart(id) {
-    selectedSubjects = selectedSubjects.filter(s => s.id !== id);
-    updateCart();
-}
-
-function confirmRegistration() {
-    if (confirm('ยืนยันการลงทะเบียนวิชาทั้งหมดในตะกร้า?')) {
-        // บันทึกลง LocalStorage เพื่อให้หน้า Schedule.html ดึงไปใช้
-        localStorage.setItem('registeredSubjects', JSON.stringify(cart));
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align:center; padding: 40px; color: #999;">
+                    <i class="fas fa-info-circle" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+                    ยังไม่มีรายวิชาในตะกร้า
+                </td>
+            </tr>`;
+        if(btnConfirm) btnConfirm.style.display = 'none';
+    } else {
+        selectedSubjects.forEach((subj, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${subj.id}</td>
+                <td style="text-align:left;">${subj.name}</td>
+                <td>${subj.credit}</td>
+                <td>${subj.time}</td>
+                <td>
+                    <button class="btn-icon delete" onclick="removeFromCart(${index})" title="ลบรายวิชา">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
         
-        alert('ลงทะเบียนสำเร็จ!');
-        window.location.href = 'schedule.html'; // ส่งไปหน้าตารางเรียนทันที
+        // แสดงปุ่มยืนยันเมื่อมีวิชา
+        if(btnConfirm) btnConfirm.style.display = 'inline-block';
     }
 }
 
+// ==================== 3. จัดการ Popup (Modal) ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    // ผูกเหตุการณ์ปุ่มยืนยัน ให้เปิด Popup
+    const confirmBtn = document.getElementById('btnConfirmReg');
+    if(confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            // เปิด Popup
+            document.getElementById('successModal').style.display = 'flex';
+        });
+    }
+    
+    // โหลดตารางว่างๆ ตอนเริ่มต้น
+    updateCartTable();
+});
+
+// ฟังก์ชันเมื่อกดปุ่ม "ตกลง" ใน Popup
+function closeModal() {
+    // 1. ซ่อน Popup
+    document.getElementById('successModal').style.display = 'none';
+    
+    // 2. จำลองการบันทึกข้อมูล (Save to LocalStorage)
+    localStorage.setItem('registeredSubjects', JSON.stringify(selectedSubjects));
+    
+    // 3. เปลี่ยนหน้าไปที่ตารางเรียน
+    window.location.href = 'schedule.html'; 
+}
+// ฟังก์ชันโหลดตารางเรียน
 function loadSchedule() {
     const yearSelect = document.getElementById('yearSelect');
     if(!yearSelect) return; 
@@ -372,6 +416,7 @@ function loadSchedule() {
         tbody.appendChild(tr);
     });
 }
+// ฟังก์ชันโหลดตารางสอบ
 function loadExamSchedule() {
     const year = document.getElementById('yearSelect').value;
     const term = document.getElementById('termSelect').value;
@@ -412,6 +457,7 @@ function switchScheduleTab(tabName) {
     document.getElementById('examScheduleSection').style.display = tabName === 'exam' ? 'block' : 'none';
 }
 
+// --- ฟังก์ชันโหลดผลการเรียน ---
 function loadGrades() {
     const yearSelect = document.getElementById('gradeYearSelect');
     if(!yearSelect) return; 
@@ -480,6 +526,7 @@ function loadGrades() {
     document.getElementById('cumCredit').innerText = cumTotalCredit.toFixed(1);
     document.getElementById('termGpa').innerText = termGPA.toFixed(2);
     document.getElementById('cumGpax').innerText = cumGPAX.toFixed(2);
+    
 }
 
 // --- ฟังก์ชันโหลดข้อมูลสุขภาพ ---
@@ -514,7 +561,6 @@ function loadHealth() {
     document.getElementById('bloodType').innerText = healthData.bloodType;
     document.getElementById('chronicDisease').innerText = healthData.chronic;
     document.getElementById('allergy').innerText = healthData.allergies;
-    document.getElementById('eyeSight').innerText = healthData.eyeSight;
 
     // 4. สร้างตารางวัคซีน
     const vaccineBody = document.getElementById('vaccineBody');
